@@ -1,0 +1,24 @@
+service: dog-api-serverless2
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  profile: david-mobapp 
+  region: eu-north-1
+  iam:
+    role: arn:aws:iam::626646945997:role/lectures-cloud
+
+plugins: 
+    - serverless-webpack
+
+package:
+    individually: true
+
+functions:
+  getDogs:
+    handler: functions/getDogs/index.handler
+    events:
+      - httpApi: 
+          path: '/dogs'
+          method: GET
