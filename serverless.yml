@@ -28,6 +28,18 @@ functions:
       - httpApi: 
           path: '/dogs'
           method: POST
+  deleteDogs:
+    handler: functions/deleteDogs/index.handler
+    events:
+      - httpApi: 
+          path: '/dogs/{dogId}'
+          method: DELETE        
+  updateDogs:
+    handler: functions/updateDogs/index.handler
+    events:
+      - httpApi: 
+          path: '/dogs/{dogId}'
+          method: PATCH        
 
 
 
