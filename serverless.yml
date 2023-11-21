@@ -46,7 +46,12 @@ functions:
       - httpApi: 
           path: '/auth/signUp'
           method: POST           
-
+  logIn:
+    handler: functions/logIn/index.handler
+    events:
+      - httpApi: 
+          path: '/auth/login'
+          method: POST           
 
 
 
