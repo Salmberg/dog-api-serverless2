@@ -40,6 +40,12 @@ functions:
       - httpApi: 
           path: '/dogs/{dogId}'
           method: PATCH        
+  signUp:
+    handler: functions/signUp/index.handler
+    events:
+      - httpApi: 
+          path: '/auth/signUp'
+          method: POST           
 
 
 
@@ -57,6 +63,18 @@ resources:
           - AttributeName: id
             KeyType: HASH   
         BillingMode: PAY_PER_REQUEST
+
+    usersDb:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: accounts
+        AttributeDefinitions:
+          - AttributeName: username
+            AttributeType: S
+        KeySchema:
+          - AttributeName: username
+            KeyType: HASH   
+        BillingMode: PAY_PER_REQUEST    
 
         
          

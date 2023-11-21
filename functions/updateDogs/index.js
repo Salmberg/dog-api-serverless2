@@ -6,17 +6,26 @@ const db = new AWS.DynamoDB.DocumentClient();
 exports.handler = async (event) => {
 
     const { dogId } = event.pathParameters;
-    const { age } = JSON.parse(event.body);
+    const updateAttributes = JSON.parse(event.body);
 
+    const updateExpression = 'set ' + Object.keys(updateAttributes).map(attributeName => `${attributeName} = :${attributeName}`).join(', ');
+    
+    let expressionAttributeValues = Object.keys(updateAttributes).reduce(values, attributeName => {
+        values[`:${attributeName}`] = updateAttributes[attributeName];
+        return values;
+    }, {});
+
+    expressionAttributeValues = { ...expressionAttributeValues, ':dogId': dogId }
+    
+   
     try {
         await db.update({
             TableName: 'dogs-db',
             Key: { id: dogId },
             ReturnValues: 'ALL_NEW',
-            UpdateExpression: 'set age = :age',
-            ExpressionAttributeValues: {
-                ':age': age
-            }
+            UpdateExpression: updateExpression,
+            ConditionExpression: 'id = :dogId',
+            ExpressionAttributeValues: expressionAttributeValues
         }).promise();
 
         return sendResponse(200, {success: true});
