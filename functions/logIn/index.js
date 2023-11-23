@@ -25,9 +25,8 @@ async function getUser(username) {
     return false;
 }
 
-
-
 }
+
 
 async function login(username, password) {
     const user = await getUser(username);
